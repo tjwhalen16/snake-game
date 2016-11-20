@@ -1,0 +1,20 @@
+# Visual studio generated files
+*.VC.db
+*.VC.VC.openDB
+.vs/
+*.vcxproj.filters
+*.vcxproj
+**/Debug/
+**/ipch/
+*.sln
+**/*.user
+**/packages/
+**/desktop.ini
+**/packages.config
+
+# Misc
+*~
+stdafx.cpp
+stdafx.h
+targetver.h
+ReadMe.txt
