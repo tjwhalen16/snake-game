@@ -9,13 +9,21 @@
 // Initialize the starting snake which has a head, 1 body segment, and a tail
 Segments::Segments() :
 	// Position is the middle of the screen
-	head(Position{ SnakeGame::GetScreenWidth() / 2, SnakeGame::GetScreenHeight() / 2 }, Velocity{ VELOCITY, 0 }),
+	head(std::pair<int, int>{ SnakeGame::GetScreenWidth() / 2, SnakeGame::GetScreenHeight() / 2 }, std::pair<int, int>{ VELOCITY, 0 }),
 	// Position is behind head segment and 1 body segment
-	tail(Position{ SnakeGame::GetScreenWidth() / 2 - BODY_WIDTH - TAIL_WIDTH, SnakeGame::GetScreenHeight() / 2 }, Velocity{ VELOCITY, 0 })
+	tail(std::pair<int, int>{ SnakeGame::GetScreenWidth() / 2 - BODY_WIDTH - TAIL_WIDTH, SnakeGame::GetScreenHeight() / 2 }, std::pair<int, int>{ VELOCITY, 0 })
 {
 	// Push 1 body segment into the body vector
 	// Position is behind head and before tail
-	body.emplace_back(Position{ head.GetPosition().x - BODY_WIDTH, SnakeGame::GetScreenHeight() / 2 }, Velocity{ VELOCITY, 0 });
+	body.emplace_back(std::pair<int, int>{ head.GetPosition().first - BODY_WIDTH, SnakeGame::GetScreenHeight() / 2 }, std::pair<int, int>{ VELOCITY, 0 });
+}
+
+// Fill position map with intial snake
+Snake::Snake() : position_map_{ {segments_.head.GetPosition(), 1}, {segments_.body.front().GetPosition(), 1}, {segments_.tail.GetPosition(), 1} } 
+{ }
+
+const std::unordered_map<std::pair<int, int>, int, PairHash>& Snake::GetPositionMap() {
+	return position_map_;
 }
 
 // Updates the heads velocity based on key presses
@@ -24,16 +32,16 @@ void Snake::HandleEvent(SDL_Event &e) {
 	if (e.type = SDL_KEYDOWN && e.key.repeat == 0) {
 		switch (e.key.keysym.sym) {
 			case SDLK_UP:
-				segments_.head.set_velocity(Velocity{ 0, -VELOCITY });
+				segments_.head.set_velocity(std::pair<int, int>{ 0, -VELOCITY });
 				break;
 			case SDLK_DOWN:
-				segments_.head.set_velocity(Velocity{ 0, VELOCITY });
+				segments_.head.set_velocity(std::pair<int, int>{ 0, VELOCITY });
 				break;
 			case SDLK_LEFT:
-				segments_.head.set_velocity(Velocity{ -VELOCITY, 0 });
+				segments_.head.set_velocity(std::pair<int, int>{ -VELOCITY, 0 });
 				break;
 			case SDLK_RIGHT:
-				segments_.head.set_velocity(Velocity{ VELOCITY, 0 });
+				segments_.head.set_velocity(std::pair<int, int>{ VELOCITY, 0 });
 				break;
 			default:
 				; // Do nothing for other keys

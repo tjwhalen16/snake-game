@@ -10,7 +10,7 @@
 class Body : public Segment {
 public:
 	Body() = default;
-	Body(Position, Velocity);
+	Body(std::pair<int, int>, std::pair<int, int>);
 	Body(Body &&other);
 	~Body();
 	virtual void Render();

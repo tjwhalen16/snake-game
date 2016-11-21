@@ -9,7 +9,7 @@
 
 class Head : public Segment {
 public:
-	Head(Position, Velocity);
+	Head(std::pair<int, int>, std::pair<int, int>);
 	~Head();
 	virtual void Render();
 private:

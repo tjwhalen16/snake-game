@@ -25,5 +25,6 @@ private:
 	sdl2::surface_ptr screen_;
 	static sdl2::renderer_ptr renderer_;
 	std::unique_ptr<Snake> snake_;
+	int game_speed_{ 400 };
 };
 

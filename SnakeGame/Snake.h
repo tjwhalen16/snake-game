@@ -3,6 +3,7 @@
 #include <vector>
 #include <SDL.h>
 #include <memory>
+#include <unordered_map>
 #include "Segment.h"
 #include "Head.h"
 #include "Body.h"
@@ -18,6 +19,8 @@ struct Segments {
 
 class Snake {
 public:
+	Snake();
+	const std::unordered_map<std::pair<int, int>, int, PairHash>& GetPositionMap();
 	void HandleEvent(SDL_Event &e); // Updates the heads velocity
 	void Update();
 	void Render();
@@ -25,5 +28,6 @@ private:
 	void UpdateSegmentVelocities();
 
 	Segments segments_;
+	std::unordered_map<std::pair<int, int>, int, PairHash> position_map_;
 };
 

@@ -58,6 +58,10 @@ bool SnakeGame::InitGame() {
 	// Initialize the snake
 	//snake_ = Snake(width_, height_, renderer_.get());
 	snake_ = std::make_unique<Snake>();
+	// TODO remove
+	/*for (auto pair : snake_->GetPositionMap()) {
+		std::cout << "(" << pair.first.first << "," << pair.first.second << ")" << " " << pair.second << '\n';
+	}*/
 	return true;
 }
 
@@ -75,7 +79,7 @@ void SnakeGame::GameLoop() {
 			}			
 		}
 		RedrawScreen();
-		SDL_Delay(250);
+		SDL_Delay(game_speed_);
 	}
 }
 

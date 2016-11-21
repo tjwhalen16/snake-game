@@ -9,7 +9,7 @@
 
 class Tail : public Segment {
 public:
-	Tail(Position, Velocity);
+	Tail(std::pair<int, int>, std::pair<int, int>);
 	~Tail();
 	virtual void Render();
 private:

@@ -2,7 +2,7 @@
 #include "SnakeGame.h"
 
 
-Body::Body(Position pos, Velocity vel) : Segment(BODY_WIDTH, BODY_HEIGHT, pos, vel), texture_(BODY_IMAGE_PATH, SnakeGame::GetRenderer()) {
+Body::Body(std::pair<int, int> pos, std::pair<int, int> vel) : Segment(BODY_WIDTH, BODY_HEIGHT, pos, vel), texture_(BODY_IMAGE_PATH, SnakeGame::GetRenderer()) {
 	if (!texture_.LoadFromFile()) {
 		throw "Failed to load head texture from file\n";
 	}
@@ -18,5 +18,5 @@ Body::~Body()
 }
 
 void Body::Render() {
-	texture_.Render(position_.x, position_.y);
+	texture_.Render(position_.first, position_.second);
 }

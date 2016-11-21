@@ -1,11 +1,9 @@
 #pragma once
 
-struct Position {
-	int x;
-	int y;
-};
+#include <utility>
 
-struct Velocity {
-	int x;
-	int y;
+struct PairHash {
+	inline std::size_t operator()(const std::pair<int, int> &v) const {
+		return v.first * 8000 + v.second;
+	}
 };
