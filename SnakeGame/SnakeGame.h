@@ -16,6 +16,7 @@ private:
 	bool InitSdl();
 	bool InitGame();
 	void GameLoop();
+	void RedrawScreen();
 	void ProccessEvent(SDL_Event &e);
 
 	static int width_;

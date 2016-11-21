@@ -18,15 +18,12 @@ struct Segments {
 
 class Snake {
 public:
-	Snake();
-	~Snake();
 	void HandleEvent(SDL_Event &e); // Updates the heads velocity
 	void Update();
 	void Render();
-
 private:
-	int head_pos_{ 0 };
-	//std::vector<std::unique_ptr<Segment>> segments_;
+	void UpdateSegmentVelocities();
+
 	Segments segments_;
 };
 

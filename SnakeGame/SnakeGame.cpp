@@ -67,24 +67,28 @@ void SnakeGame::GameLoop() {
 	while (!quit) {
 		// While there are events to be proccessed
 		while (SDL_PollEvent(&e)) {
-			// User wants to quit
+			// User pressed the red X
 			if (e.type == SDL_QUIT) {
 				quit = true;
-			}
-			// Let the snake handle input
-			// TODO call this: snake_.HandleEvent(e);
+			} else {
+				snake_->HandleEvent(e);
+			}			
 		}
-		// Redraw the screen
-		// Update the snake's position
-		snake_->Update();
-		// Clear the screen
-		SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
-		SDL_RenderClear(renderer_.get());
-		// Render the snake
-		snake_->Render();
-		// Update the screen
-		SDL_RenderPresent(renderer_.get());
+		RedrawScreen();
+		SDL_Delay(250);
 	}
+}
+
+void SnakeGame::RedrawScreen() {
+	// Update the snake's position
+	snake_->Update();
+	// Clear the screen
+	SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
+	SDL_RenderClear(renderer_.get());
+	// Render the snake
+	snake_->Render();
+	// Update the screen
+	SDL_RenderPresent(renderer_.get());
 }
 
 int SnakeGame::GetScreenWidth() {
