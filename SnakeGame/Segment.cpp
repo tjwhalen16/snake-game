@@ -27,4 +27,18 @@ void Segment::UpdatePosition() {
 	}
 }
 
+double Segment::GetAngleBasedOnVelocity() {
+	double angle{ 0 };
+	if (velocity_.x > 0) {
+		angle = 0; // point image right
+	} else if (velocity_.x < 0) {
+		angle = 180; // point image to the left
+	} else if (velocity_.y > 0) {
+		angle = 90; // point the image down
+	} else if (velocity_.y < 0) {
+		angle = 270; // point the image up
+	}
+	return angle;
+}
+
 

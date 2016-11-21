@@ -12,5 +12,5 @@ Tail::~Tail()
 }
 
 void Tail::Render() {
-	texture_.Render(position_.x, position_.y);
+	texture_.Render(position_.x, position_.y, nullptr, GetAngleBasedOnVelocity(), nullptr);
 }

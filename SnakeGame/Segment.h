@@ -17,6 +17,8 @@ protected:
 	int segment_height_;
 	Position position_;
 	Velocity velocity_;
+
+	double GetAngleBasedOnVelocity();
 private:
 	// TODO need this? virtual void LoadImage() = 0; // Pure virtual
 };
