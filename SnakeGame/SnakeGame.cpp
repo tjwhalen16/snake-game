@@ -76,6 +76,7 @@ void SnakeGame::GameLoop() {
 		}
 		// Redraw the screen
 		// Update the snake's position
+		snake_->Update();
 		// Clear the screen
 		SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
 		SDL_RenderClear(renderer_.get());

@@ -9,7 +9,7 @@ public:
 	Velocity get_velocity() const;
 	void set_velocity(const Velocity &velocity);
 	Position GetPosition() const;
-	virtual void UpdatePosition(int screen_width, int screen_height);
+	virtual void UpdatePosition();
 		
 	virtual void Render() = 0; // Pure virtual
 protected:

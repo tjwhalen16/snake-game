@@ -29,6 +29,16 @@ Snake::~Snake()
 {
 }
 
+void Snake::Update() {
+	segments_.head.UpdatePosition();
+	// Render the body
+	for (Body &body : segments_.body) {
+		body.UpdatePosition();
+	}
+	// Render the tail
+	segments_.tail.UpdatePosition();
+}
+
 void Snake::Render() {
 	segments_.head.Render();
 	// Render the body

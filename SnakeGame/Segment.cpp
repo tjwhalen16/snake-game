@@ -1,4 +1,5 @@
 #include "Segment.h"
+#include "SnakeGame.h"
 
 Segment::Segment(int width, int height, Position pos, Velocity vel) : position_(pos), velocity_(vel)
 {}
@@ -13,15 +14,15 @@ Position Segment::GetPosition() const {
 	return position_;
 }
 
-void Segment::UpdatePosition(int screen_width, int screen_height) {
+void Segment::UpdatePosition() {
 	position_.x += velocity_.x;
 	position_.y += velocity_.y;
 	// Check if this segment went off the screen
-	if (position_.x >= screen_width) {
-		position_.x -= screen_width; // Reset this segment's x position
+	if (position_.x >= SnakeGame::GetScreenWidth()) {
+		position_.x -= SnakeGame::GetScreenWidth(); // Reset this segment's x position
 	}
-	if (position_.y >= screen_height) {
-		position_.y -= screen_height; // Reset this segment's y position
+	if (position_.y >= SnakeGame::GetScreenHeight()) {
+		position_.y -= SnakeGame::GetScreenHeight(); // Reset this segment's y position
 	}
 }
 
