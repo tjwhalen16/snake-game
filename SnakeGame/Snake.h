@@ -5,10 +5,20 @@
 #include <memory>
 #include "Segment.h"
 #include "Head.h"
+#include "Body.h"
+#include "Tail.h"
+
+struct Segments {
+	Head head;
+	std::vector<Body> body;
+	Tail tail;
+
+	Segments();
+};
 
 class Snake {
 public:
-	Snake(int width, int height, SDL_Renderer *renderer);
+	Snake();
 	~Snake();
 	void HandleEvent(SDL_Event &e); // Updates the heads velocity
 	void Update();
@@ -17,8 +27,6 @@ public:
 private:
 	int head_pos_{ 0 };
 	//std::vector<std::unique_ptr<Segment>> segments_;
-	Head head_;
-	int screen_width_;
-	int screen_height_;
+	Segments segments_;
 };
 

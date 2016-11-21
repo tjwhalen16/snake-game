@@ -8,6 +8,9 @@ public:
 	SnakeGame(int width, int height);
 	~SnakeGame();
 	void Play();
+	static int GetScreenWidth();
+	static int GetScreenHeight();
+	static SDL_Renderer* GetRenderer();
 
 private:
 	bool InitSdl();
@@ -15,11 +18,11 @@ private:
 	void GameLoop();
 	void ProccessEvent(SDL_Event &e);
 
-	int width_;
-	int height_;
+	static int width_;
+	static int height_;
 	sdl2::window_ptr window_;
 	sdl2::surface_ptr screen_;
-	sdl2::renderer_ptr renderer_;
+	static sdl2::renderer_ptr renderer_;
 	std::unique_ptr<Snake> snake_;
 };
 

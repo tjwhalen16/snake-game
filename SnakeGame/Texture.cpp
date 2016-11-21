@@ -2,13 +2,12 @@
 #include <SDL_image.h>
 
 Texture::Texture(std::string path, SDL_Renderer *renderer) : path_(path), renderer_(renderer)
-{
+{ }
+
+Texture::Texture(Texture &&other) {
+	texture_.reset(other.texture_.release());
 }
 
-
-Texture::~Texture()
-{
-}
 // TODO do I need the stuff I commented out?
 bool Texture::LoadFromFile() {
 	//The final texture

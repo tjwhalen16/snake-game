@@ -9,6 +9,10 @@ void Segment::set_velocity(const Velocity &velocity) {
 	velocity_ = velocity;
 }
 
+Position Segment::GetPosition() const {
+	return position_;
+}
+
 void Segment::UpdatePosition(int screen_width, int screen_height) {
 	position_.x += velocity_.x;
 	position_.y += velocity_.y;

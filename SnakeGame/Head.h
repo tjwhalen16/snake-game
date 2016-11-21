@@ -9,7 +9,7 @@
 
 class Head : public Segment {
 public:
-	Head(int width, int height, Position, Velocity, SDL_Renderer *renderer);
+	Head(Position, Velocity);
 	~Head();
 	virtual void Render();
 private:

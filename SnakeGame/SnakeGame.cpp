@@ -1,8 +1,16 @@
 #include "SnakeGame.h"
 #include <iostream>
 
-SnakeGame::SnakeGame(int width, int height) : width_(width), height_(height)
-{ }
+// Initialize static member variables
+int SnakeGame::width_ = 0;
+int SnakeGame::height_ = 0;
+sdl2::renderer_ptr SnakeGame::renderer_ = nullptr;
+
+SnakeGame::SnakeGame(int width, int height) {
+	// Define the static member width & height to be the actual size
+	width_ = width;
+	height_ = height;
+}
 
 
 SnakeGame::~SnakeGame()
@@ -18,7 +26,6 @@ void SnakeGame::Play() {
 	}
 	GameLoop();
 }
-
 
 bool SnakeGame::InitSdl() {
 	// Initialize SDL
@@ -50,7 +57,7 @@ bool SnakeGame::InitSdl() {
 bool SnakeGame::InitGame() {
 	// Initialize the snake
 	//snake_ = Snake(width_, height_, renderer_.get());
-	snake_ = std::make_unique<Snake>(width_, height_, renderer_.get());
+	snake_ = std::make_unique<Snake>();
 	return true;
 }
 
@@ -77,4 +84,14 @@ void SnakeGame::GameLoop() {
 		// Update the screen
 		SDL_RenderPresent(renderer_.get());
 	}
+}
+
+int SnakeGame::GetScreenWidth() {
+	return width_;
+}
+int SnakeGame::GetScreenHeight() {
+	return height_;
+}
+SDL_Renderer* SnakeGame::GetRenderer() {
+	return renderer_.get();
 }
