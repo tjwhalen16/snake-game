@@ -16,8 +16,10 @@ private:
 	bool InitSdl();
 	bool InitGame();
 	void GameLoop();
+	bool UpdateGameState();
+	bool IsGameOver();
 	void RedrawScreen();
-	void ProccessEvent(SDL_Event &e);
+	// TODO void ProccessEvent(SDL_Event &e);
 
 	static int width_;
 	static int height_;

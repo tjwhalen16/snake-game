@@ -19,13 +19,6 @@ std::pair<int, int> Segment::GetPosition() const {
 void Segment::UpdatePosition() {
 	position_.first += velocity_.first * segment_width_;
 	position_.second += velocity_.second * segment_height_;
-	// Check if this segment went off the screen
-	if (position_.first >= SnakeGame::GetScreenWidth()) {
-		position_.first -= SnakeGame::GetScreenWidth(); // Reset this segment's x position
-	}
-	if (position_.second >= SnakeGame::GetScreenHeight()) {
-		position_.second -= SnakeGame::GetScreenHeight(); // Reset this segment's y position
-	}
 }
 
 double Segment::GetAngleBasedOnVelocity() {

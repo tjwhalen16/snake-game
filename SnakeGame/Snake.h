@@ -21,6 +21,7 @@ class Snake {
 public:
 	Snake();
 	const std::unordered_map<std::pair<int, int>, int, PairHash>& GetPositionMap();
+	std::pair<int, int> GetHeadPosition() const;
 	void HandleEvent(SDL_Event &e); // Updates the heads velocity
 	void Update();
 	void Render();

@@ -56,19 +56,15 @@ bool SnakeGame::InitSdl() {
 
 bool SnakeGame::InitGame() {
 	// Initialize the snake
-	//snake_ = Snake(width_, height_, renderer_.get());
 	snake_ = std::make_unique<Snake>();
-	// TODO remove
-	/*for (auto pair : snake_->GetPositionMap()) {
-		std::cout << "(" << pair.first.first << "," << pair.first.second << ")" << " " << pair.second << '\n';
-	}*/
+	// TODO initialize the food
 	return true;
 }
 
 void SnakeGame::GameLoop() {
 	bool quit = false;
 	SDL_Event e;
-	while (!quit) {
+	while (!quit) { // TODO instead of bool use enum... so while(PLAYING)
 		// While there are events to be proccessed
 		while (SDL_PollEvent(&e)) {
 			// User pressed the red X
@@ -78,14 +74,44 @@ void SnakeGame::GameLoop() {
 				snake_->HandleEvent(e);
 			}			
 		}
+		// Update the snake's position
+		snake_->Update();
+		if (!UpdateGameState()) { // TODO pass this gamestate enum  ref so it can update game state
+			quit = true;
+		}
 		RedrawScreen();
 		SDL_Delay(game_speed_);
 	}
 }
 
+// Checks if the game is over
+// Tells the snake to grow if it should.
+// Tells the food to spawn another if eaten
+bool SnakeGame::UpdateGameState() {
+	if (IsGameOver()) {
+		return false;
+	}
+	return true;
+}
+
+bool SnakeGame::IsGameOver() {
+	// Game ends if the snake's head leaves the screen
+	std::pair<int, int> pos = snake_->GetHeadPosition();
+	if (pos.first >= SnakeGame::GetScreenWidth() || pos.first < 0) {
+		return true; // Game over, snake is too far right or left
+	}
+	if (pos.second >= SnakeGame::GetScreenHeight() || pos.second < 0) {
+		return true; // Game over, snake is too far down or up
+	}
+	// Game ends if the head touches any other segment of the snake
+	// An int greater than 1 means more than 1 segment is occupying the same location = game over
+	if (snake_->GetPositionMap().at(pos) > 1) {
+		return true;
+	}
+	return false; // Game not over if made it here
+}
+
 void SnakeGame::RedrawScreen() {
-	// Update the snake's position
-	snake_->Update();
 	// Clear the screen
 	SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
 	SDL_RenderClear(renderer_.get());

@@ -26,6 +26,10 @@ const std::unordered_map<std::pair<int, int>, int, PairHash>& Snake::GetPosition
 	return position_map_;
 }
 
+std::pair<int, int> Snake::GetHeadPosition() const {
+	return segments_.head.GetPosition();
+}
+
 // Updates the heads velocity based on key presses
 void Snake::HandleEvent(SDL_Event &e) {
 	// If key is pressed down for the first time, not held
@@ -51,14 +55,18 @@ void Snake::HandleEvent(SDL_Event &e) {
 
 // Update the position for all of the snake's segments
 void Snake::Update() {
+	// Update the head's position
 	segments_.head.UpdatePosition();
+	// Add the head's position to the positon map after its update
+	++position_map_[segments_.head.GetPosition()];
 	// Update the body's position
 	for (Body &body : segments_.body) {
 		body.UpdatePosition();
 	}
+	// Remove the tail's position to the position map before its update
+	--position_map_[segments_.tail.GetPosition()];
 	// Update the tail's position
 	segments_.tail.UpdatePosition();
-
 	// Set new velocites for each segment based on the next segment in the body
 	UpdateSegmentVelocities();
 }
