@@ -71,6 +71,11 @@ void Snake::Update() {
 	UpdateSegmentVelocities();
 }
 
+// Add a body segment to the end of the snake's body
+void Snake::Grow() {
+
+}
+
 // Render the snake to the screen
 void Snake::Render() {
 	// Render the head segment

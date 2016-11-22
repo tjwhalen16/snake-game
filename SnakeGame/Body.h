@@ -12,7 +12,6 @@ public:
 	Body() = default;
 	Body(std::pair<int, int>, std::pair<int, int>);
 	Body(Body &&other);
-	~Body();
 	virtual void Render();
 private:
 	Texture texture_;

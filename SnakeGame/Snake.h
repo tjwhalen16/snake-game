@@ -24,6 +24,7 @@ public:
 	std::pair<int, int> GetHeadPosition() const;
 	void HandleEvent(SDL_Event &e); // Updates the heads velocity
 	void Update();
+	void Grow();
 	void Render();
 private:
 	void UpdateSegmentVelocities();

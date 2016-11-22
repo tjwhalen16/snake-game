@@ -7,11 +7,6 @@ Head::Head(std::pair<int, int> pos, std::pair<int, int> vel) : Segment(HEAD_WIDT
 	}
 }
 
-
-Head::~Head()
-{
-}
-
 void Head::Render() {
 	texture_.Render(position_.first, position_.second, nullptr, GetAngleBasedOnVelocity(), nullptr);
 }

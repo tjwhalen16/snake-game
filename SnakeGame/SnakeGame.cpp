@@ -57,7 +57,9 @@ bool SnakeGame::InitSdl() {
 bool SnakeGame::InitGame() {
 	// Initialize the snake
 	snake_ = std::make_unique<Snake>();
-	// TODO initialize the food
+	// Initialize the food
+	food_ = std::make_unique<Food>();
+	food_->SetRandomPosition();
 	return true;
 }
 
@@ -91,6 +93,7 @@ bool SnakeGame::UpdateGameState() {
 	if (IsGameOver()) {
 		return false;
 	}
+	EatFood();
 	return true;
 }
 
@@ -111,12 +114,30 @@ bool SnakeGame::IsGameOver() {
 	return false; // Game not over if made it here
 }
 
+// Handles food eating logic if the food should be eaten
+void SnakeGame::EatFood() {
+	// Check if food should be eaten
+	if (snake_->GetHeadPosition() == food_->get_position()) {
+		// Food and snake's head are in the same spot
+		// Tell the snake to grow
+		snake_->Grow();
+		// Move the food to a random position unoccupied by the snake
+		std::pair<int, int> new_position;
+		const auto position_map = snake_->GetPositionMap();
+		do {
+			new_position = food_->SetRandomPosition();
+		} while (position_map.find(new_position) != position_map.end()); // do it until food is not inside snake
+	}
+}
+
 void SnakeGame::RedrawScreen() {
 	// Clear the screen
 	SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
 	SDL_RenderClear(renderer_.get());
 	// Render the snake
 	snake_->Render();
+	// Render the food
+	food_->Render();
 	// Update the screen
 	SDL_RenderPresent(renderer_.get());
 }

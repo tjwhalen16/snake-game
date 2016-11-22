@@ -10,7 +10,6 @@
 class Head : public Segment {
 public:
 	Head(std::pair<int, int>, std::pair<int, int>);
-	~Head();
 	virtual void Render();
 private:
 	Texture texture_;

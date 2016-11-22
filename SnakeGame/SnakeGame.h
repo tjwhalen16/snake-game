@@ -2,6 +2,7 @@
 
 #include "Sdl2SmartPointers.h"
 #include "Snake.h"
+#include "Food.h"
 
 class SnakeGame {
 public:
@@ -18,6 +19,7 @@ private:
 	void GameLoop();
 	bool UpdateGameState();
 	bool IsGameOver();
+	void EatFood();
 	void RedrawScreen();
 	// TODO void ProccessEvent(SDL_Event &e);
 
@@ -27,6 +29,7 @@ private:
 	sdl2::surface_ptr screen_;
 	static sdl2::renderer_ptr renderer_;
 	std::unique_ptr<Snake> snake_;
+	std::unique_ptr<Food> food_;
 	int game_speed_{ 400 };
 };
 
