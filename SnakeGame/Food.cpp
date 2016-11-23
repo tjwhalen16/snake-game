@@ -16,7 +16,7 @@ std::pair<int, int> Food::get_position() const {
 std::pair<int, int> Food::SetRandomPosition() {
 	int flat_position = d_(e_);
 	// Convert number into (x,y) position
-	position_ = std::make_pair<int, int>((flat_position % SnakeGame::GetScreenWidth()/ WIDTH) * WIDTH, (flat_position / SnakeGame::GetScreenWidth()/ WIDTH) * HEIGHT);
+	position_ = std::make_pair<int, int>((flat_position % (SnakeGame::GetScreenWidth()/ WIDTH)) * WIDTH, (flat_position / (SnakeGame::GetScreenWidth()/ WIDTH)) * HEIGHT);
 	return position_;
 }
 

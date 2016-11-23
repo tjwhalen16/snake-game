@@ -9,13 +9,13 @@
 // Initialize the starting snake which has a head, 1 body segment, and a tail
 Segments::Segments() :
 	// Position is the middle of the screen
-	head(std::pair<int, int>{ SnakeGame::GetScreenWidth() / 2, SnakeGame::GetScreenHeight() / 2 }, std::pair<int, int>{ VELOCITY, 0 }),
+	head(std::pair<int, int>{ (SnakeGame::GetScreenWidth() / HEAD_WIDTH / 2) * HEAD_WIDTH, (SnakeGame::GetScreenHeight() / HEAD_HEIGHT / 2) * HEAD_HEIGHT }, std::pair<int, int>{ VELOCITY, 0 }),
 	// Position is behind head segment and 1 body segment
-	tail(std::pair<int, int>{ SnakeGame::GetScreenWidth() / 2 - BODY_WIDTH - TAIL_WIDTH, SnakeGame::GetScreenHeight() / 2 }, std::pair<int, int>{ VELOCITY, 0 })
+	tail(std::pair<int, int>{ (SnakeGame::GetScreenWidth() / HEAD_WIDTH / 2) * HEAD_WIDTH - BODY_WIDTH - TAIL_WIDTH, (SnakeGame::GetScreenHeight() / HEAD_HEIGHT / 2) * HEAD_HEIGHT }, std::pair<int, int>{ VELOCITY, 0 })
 {
 	// Push 1 body segment into the body vector
 	// Position is behind head and before tail
-	body.emplace_back(std::pair<int, int>{ head.GetPosition().first - BODY_WIDTH, SnakeGame::GetScreenHeight() / 2 }, std::pair<int, int>{ VELOCITY, 0 });
+	body.emplace_back(std::pair<int, int>{ head.GetPosition().first - BODY_WIDTH, (SnakeGame::GetScreenHeight() / HEAD_HEIGHT / 2) * HEAD_HEIGHT }, std::pair<int, int>{ VELOCITY, 0 });
 }
 
 // Fill position map with intial snake
