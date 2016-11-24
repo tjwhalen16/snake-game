@@ -12,11 +12,6 @@ SnakeGame::SnakeGame(int width, int height) {
 	height_ = height;
 }
 
-
-SnakeGame::~SnakeGame()
-{
-}
-
 void SnakeGame::Play() {
 	if (!InitSdl()) {
 		std::cout << "SDL initialization failed, exiting...\n";
@@ -76,8 +71,6 @@ void SnakeGame::GameLoop() {
 				snake_->HandleEvent(e);
 			}			
 		}
-		// Update the snake's position
-		snake_->Update();
 		if (!UpdateGameState()) { // TODO pass this gamestate enum  ref so it can update game state
 			quit = true;
 		}
@@ -86,15 +79,39 @@ void SnakeGame::GameLoop() {
 	}
 }
 
-// Checks if the game is over
+// Checks if the game is over.
 // Tells the snake to grow if it should.
-// Tells the food to spawn another if eaten
+// Updates snake normally if it shouldn't grow.
+// Tells the food to respawn if eaten.
 bool SnakeGame::UpdateGameState() {
+	if (!EatFood()) {
+		// Update snake normally if food was not eaten
+		snake_->Update();
+	}
 	if (IsGameOver()) {
 		return false;
-	}
-	EatFood();
+	}	
 	return true;
+}
+
+// Handles food eating logic and grows snake
+// Returns true if food was eaten, else false
+bool SnakeGame::EatFood() {
+	// Check if food should be eaten
+	if (snake_->GetNextHeadPosition() == food_->get_position()) {
+		// Food and snake's head are in the same spot
+		snake_->Grow();
+		// Move the food to a random position unoccupied by the snake
+		std::pair<int, int> new_position;
+		const auto position_map = snake_->GetPositionMap();
+		do {
+			new_position = food_->SetRandomPosition();
+		} while (position_map.find(new_position) != position_map.end()); // Do it until food is not inside snake
+		// Food was eaten
+		return true;
+	} else {
+		return false;
+	}
 }
 
 bool SnakeGame::IsGameOver() {
@@ -114,29 +131,12 @@ bool SnakeGame::IsGameOver() {
 	return false; // Game not over if made it here
 }
 
-// Handles food eating logic if the food should be eaten
-void SnakeGame::EatFood() {
-	// Check if food should be eaten
-	if (snake_->GetHeadPosition() == food_->get_position()) {
-		// Food and snake's head are in the same spot
-		// Tell the snake to grow
-		snake_->Grow();
-		// Move the food to a random position unoccupied by the snake
-		std::pair<int, int> new_position;
-		const auto position_map = snake_->GetPositionMap();
-		do {
-			new_position = food_->SetRandomPosition();
-		} while (position_map.find(new_position) != position_map.end()); // do it until food is not inside snake
-	}
-}
-
 void SnakeGame::RedrawScreen() {
 	// Clear the screen
 	SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
 	SDL_RenderClear(renderer_.get());
-	// Render the snake
+	// Render game objects
 	snake_->Render();
-	// Render the food
 	food_->Render();
 	// Update the screen
 	SDL_RenderPresent(renderer_.get());

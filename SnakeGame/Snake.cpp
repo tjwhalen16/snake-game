@@ -30,6 +30,14 @@ std::pair<int, int> Snake::GetHeadPosition() const {
 	return segments_.head.GetPosition();
 }
 
+std::pair<int, int> Snake::GetNextHeadPosition() const {
+	std::pair<int, int> pos = segments_.head.GetPosition();
+	std::pair<int, int> vel = segments_.head.get_velocity();
+	int new_x = pos.first + vel.first * HEAD_WIDTH;
+	int new_y = pos.second + vel.second * HEAD_HEIGHT;
+	return std::make_pair(new_x, new_y);
+}
+
 // Updates the heads velocity based on key presses
 void Snake::HandleEvent(SDL_Event &e) {
 	// If key is pressed down for the first time, not held
@@ -55,7 +63,6 @@ void Snake::HandleEvent(SDL_Event &e) {
 
 // Update the position for all of the snake's segments
 void Snake::Update() {
-	// Update the head's position
 	segments_.head.UpdatePosition();
 	// Add the head's position to the positon map after its update
 	++position_map_[segments_.head.GetPosition()];
@@ -73,18 +80,20 @@ void Snake::Update() {
 
 // Add a body segment to the end of the snake's body
 void Snake::Grow() {
-
+	// Put body segment at front of body with same position & velocity as head
+	segments_.body.emplace_front(segments_.head.GetPosition(), segments_.head.get_velocity());
+	// Move head up
+	segments_.head.UpdatePosition();
+	++position_map_[segments_.head.GetPosition()];
 }
 
 // Render the snake to the screen
 void Snake::Render() {
-	// Render the head segment
 	segments_.head.Render();
 	// Render the body segments
 	for (Body &body : segments_.body) {
 		body.Render();
 	}
-	// Render the tail segment
 	segments_.tail.Render();
 }
 
@@ -96,8 +105,8 @@ void Snake::UpdateSegmentVelocities() {
 	segments_.tail.set_velocity(segments_.body.back().get_velocity());
 	// Set the velocity of each body segment to the velocity of the next body segment
 	// Except for the front body segment, which gets the head's velocity
-	for (int i = 0; i < segments_.body.size() - 1; ++i) {
-		segments_.body[i].set_velocity(segments_.body[i + 1].get_velocity());
+	for (auto i = ++segments_.body.rbegin(), j = segments_.body.rbegin(); i != segments_.body.rend(); ++i, ++j) {
+		j->set_velocity(i->get_velocity());
 	}
 	// Set the front body segment's velocity to the head's velocity
 	segments_.body.front().set_velocity(segments_.head.get_velocity());

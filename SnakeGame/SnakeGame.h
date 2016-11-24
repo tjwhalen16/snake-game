@@ -7,7 +7,6 @@
 class SnakeGame {
 public:
 	SnakeGame(int width, int height);
-	~SnakeGame();
 	void Play();
 	static int GetScreenWidth();
 	static int GetScreenHeight();
@@ -19,7 +18,7 @@ private:
 	void GameLoop();
 	bool UpdateGameState();
 	bool IsGameOver();
-	void EatFood();
+	bool EatFood();
 	void RedrawScreen();
 	// TODO void ProccessEvent(SDL_Event &e);
 
