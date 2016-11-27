@@ -52,6 +52,7 @@ bool SnakeGame::InitSdl() {
 bool SnakeGame::InitGame() {
 	// Initialize the snake
 	snake_ = std::make_unique<Snake>();
+	max_snake_size = width_ / 20 * height_ / 20;
 	// Initialize the food
 	food_ = std::make_unique<Food>();
 	food_->SetRandomPosition();
@@ -85,11 +86,14 @@ void SnakeGame::GameLoop() {
 // Tells the food to respawn if eaten.
 // Updates enum member variable game_state_ with new game state
 void SnakeGame::UpdateGameState() {
-	if (!EatFood()) {
+	bool food_eaten = EatFood();
+	if (!food_eaten) {
 		// Update snake normally if food was not eaten
 		snake_->Update();
 	}
-	IsGameOver();
+	if (!IsGameOver() && food_eaten) {
+		SpawnFood();
+	}
 }
 
 // Handles food eating logic and grows snake
@@ -98,21 +102,23 @@ bool SnakeGame::EatFood() {
 	// Check if food should be eaten
 	if (snake_->GetNextHeadPosition() == food_->get_position()) {
 		// Food and snake's head are in the same spot
-		snake_->Grow();
-		// Move the food to a random position unoccupied by the snake
-		std::pair<int, int> new_position;
-		const auto position_map = snake_->GetPositionMap();
-		do {
-			new_position = food_->SetRandomPosition();
-		} while (position_map.find(new_position) != position_map.end() && position_map.at(new_position) != 0); // Do it until food is not inside snake
-		// Food was eaten
-		return true;
+		snake_->Grow();				
+		return true; // Food was eaten
 	} else {
 		return false;
 	}
 }
 
-void SnakeGame::IsGameOver() {
+void SnakeGame::SpawnFood() {
+	// Move the food to a random position unoccupied by the snake
+	std::pair<int, int> new_position;
+	const auto position_map = snake_->GetPositionMap();
+	do {
+		new_position = food_->SetRandomPosition();
+	} while (position_map.find(new_position) != position_map.end() && position_map.at(new_position) != 0); // Do it until food is not inside snake
+}
+
+bool SnakeGame::IsGameOver() {
 	// Game ends if the snake's head leaves the screen
 	std::pair<int, int> pos = snake_->GetHeadPosition();
 	if (pos.first >= SnakeGame::GetScreenWidth() || pos.first < 0) {
@@ -125,6 +131,15 @@ void SnakeGame::IsGameOver() {
 	// An int greater than 1 means more than 1 segment is occupying the same location = game over
 	if (snake_->GetPositionMap().at(pos) > 1) {
 		game_state_ = LOST;
+	}
+	if (snake_->GetNumberOfSegments() == max_snake_size) {
+		game_state_ = WON;
+	}
+
+	if (game_state_ != PLAYING) {
+		return true;
+	} else {
+		return false;
 	}
 }
 

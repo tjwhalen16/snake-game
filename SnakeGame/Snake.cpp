@@ -38,6 +38,12 @@ std::pair<int, int> Snake::GetNextHeadPosition() const {
 	return std::make_pair(new_x, new_y);
 }
 
+int Snake::GetNumberOfSegments() const {
+	int count = 2; // +1 for head, and +1 for tail
+	count += segments_.body.size();
+	return count;
+}
+
 // Updates the heads velocity based on key presses
 void Snake::HandleEvent(SDL_Event &e) {
 	// If key is pressed down for the first time, not held

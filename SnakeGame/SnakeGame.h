@@ -24,8 +24,9 @@ private:
 	bool InitGame();
 	void GameLoop();
 	void UpdateGameState();
-	void IsGameOver();
+	bool IsGameOver();
 	bool EatFood();
+	void SpawnFood();
 	void RedrawScreen();
 	void HandleGameOverState();
 	// TODO void ProccessEvent(SDL_Event &e);
@@ -39,5 +40,6 @@ private:
 	std::unique_ptr<Food> food_;
 	int game_speed_{ 400 };
 	GameState game_state_;
+	int max_snake_size;
 };
 
