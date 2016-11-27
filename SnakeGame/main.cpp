@@ -3,8 +3,8 @@
 #include "Sdl2SmartPointers.h"
 #include "SnakeGame.h"
 
-#define SCREEN_WIDTH 400
-#define SCREEN_HEIGHT 300
+#define SCREEN_WIDTH 120
+#define SCREEN_HEIGHT 120
 
 int main(int argc, char* args[]) {
 	{

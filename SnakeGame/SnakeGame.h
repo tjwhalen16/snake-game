@@ -4,6 +4,13 @@
 #include "Snake.h"
 #include "Food.h"
 
+enum GameState {
+	PLAYING,
+	WON,
+	LOST,
+	QUIT
+};
+
 class SnakeGame {
 public:
 	SnakeGame(int width, int height);
@@ -16,10 +23,11 @@ private:
 	bool InitSdl();
 	bool InitGame();
 	void GameLoop();
-	bool UpdateGameState();
-	bool IsGameOver();
+	void UpdateGameState();
+	void IsGameOver();
 	bool EatFood();
 	void RedrawScreen();
+	void HandleGameOverState();
 	// TODO void ProccessEvent(SDL_Event &e);
 
 	static int width_;
@@ -30,5 +38,6 @@ private:
 	std::unique_ptr<Snake> snake_;
 	std::unique_ptr<Food> food_;
 	int game_speed_{ 400 };
+	GameState game_state_;
 };
 

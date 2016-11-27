@@ -55,43 +55,41 @@ bool SnakeGame::InitGame() {
 	// Initialize the food
 	food_ = std::make_unique<Food>();
 	food_->SetRandomPosition();
+	// Set starting game state
+	game_state_ = PLAYING;
 	return true;
 }
 
 void SnakeGame::GameLoop() {
-	bool quit = false;
 	SDL_Event e;
-	while (!quit) { // TODO instead of bool use enum... so while(PLAYING)
+	while (game_state_ == PLAYING) {
 		// While there are events to be proccessed
 		while (SDL_PollEvent(&e)) {
 			// User pressed the red X
 			if (e.type == SDL_QUIT) {
-				quit = true;
+				game_state_ = QUIT;
 			} else {
 				snake_->HandleEvent(e);
 			}			
 		}
-		if (!UpdateGameState()) { // TODO pass this gamestate enum  ref so it can update game state
-			quit = true;
-		}
+		UpdateGameState();
 		RedrawScreen();
 		SDL_Delay(game_speed_);
 	}
+	HandleGameOverState();
 }
 
 // Checks if the game is over.
 // Tells the snake to grow if it should.
 // Updates snake normally if it shouldn't grow.
 // Tells the food to respawn if eaten.
-bool SnakeGame::UpdateGameState() {
+// Updates enum member variable game_state_ with new game state
+void SnakeGame::UpdateGameState() {
 	if (!EatFood()) {
 		// Update snake normally if food was not eaten
 		snake_->Update();
 	}
-	if (IsGameOver()) {
-		return false;
-	}	
-	return true;
+	IsGameOver();
 }
 
 // Handles food eating logic and grows snake
@@ -106,7 +104,7 @@ bool SnakeGame::EatFood() {
 		const auto position_map = snake_->GetPositionMap();
 		do {
 			new_position = food_->SetRandomPosition();
-		} while (position_map.find(new_position) != position_map.end()); // Do it until food is not inside snake
+		} while (position_map.find(new_position) != position_map.end() && position_map.at(new_position) != 0); // Do it until food is not inside snake
 		// Food was eaten
 		return true;
 	} else {
@@ -114,21 +112,20 @@ bool SnakeGame::EatFood() {
 	}
 }
 
-bool SnakeGame::IsGameOver() {
+void SnakeGame::IsGameOver() {
 	// Game ends if the snake's head leaves the screen
 	std::pair<int, int> pos = snake_->GetHeadPosition();
 	if (pos.first >= SnakeGame::GetScreenWidth() || pos.first < 0) {
-		return true; // Game over, snake is too far right or left
+		game_state_ = LOST; // Game over, snake is too far right or left
 	}
 	if (pos.second >= SnakeGame::GetScreenHeight() || pos.second < 0) {
-		return true; // Game over, snake is too far down or up
+		game_state_ = LOST; // Game over, snake is too far down or up
 	}
 	// Game ends if the head touches any other segment of the snake
 	// An int greater than 1 means more than 1 segment is occupying the same location = game over
 	if (snake_->GetPositionMap().at(pos) > 1) {
-		return true;
+		game_state_ = LOST;
 	}
-	return false; // Game not over if made it here
 }
 
 void SnakeGame::RedrawScreen() {
@@ -140,6 +137,20 @@ void SnakeGame::RedrawScreen() {
 	food_->Render();
 	// Update the screen
 	SDL_RenderPresent(renderer_.get());
+}
+
+void SnakeGame::HandleGameOverState() {
+	switch (game_state_) {
+	case WON:
+		std::cout << "Won\n";
+		break;
+	case LOST:
+		std::cout << "Lost\n";
+		break;
+	case QUIT:
+		std::cout << "Quit\n";
+		break;
+	}
 }
 
 int SnakeGame::GetScreenWidth() {
